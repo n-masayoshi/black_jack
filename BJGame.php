@@ -5,6 +5,7 @@ require_once('BJCalFirstTurnScore.php');
 require_once('BJDrawOneCard.php');
 require_once('BJCalScore.php');
 require_once('BJYesOrNo.php');
+
 class BJGame
 {
     private array $playerTwoCards;
