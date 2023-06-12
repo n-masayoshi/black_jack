@@ -4,15 +4,17 @@ class CalFirstTurnScore
 {
     function calFirstTurnScore(array $cards): int
     {
-        $aceNumberEleven = 11;
-        if ($cards[0][1] === 1 && $cards[1][1] !== 1) {
-            $cards[0][1] = $aceNumberEleven;
-        } elseif ($cards[1][1] === 1 && $cards[0][1] !== 1) {
-            $cards[1][1] = $aceNumberEleven;
-        } elseif ($cards[0][1] === 1 && $cards[1][1] === 1) {
-            $cards[0][1] = $aceNumberEleven;
+        $ace = 1;
+        $aceTurnedToBeEleven = 11;
+        // 2枚のカードの内、どちらかが 1　の場合、それを 11 として計算する。
+        if ($cards[0][1] === $ace && $cards[1][1] !== $ace) {
+            $cards[0][1] = $aceTurnedToBeEleven;
+        } elseif ($cards[1][1] === $ace && $cards[0][1] !== $ace) {
+            $cards[1][1] = $aceTurnedToBeEleven;
+        } elseif ($cards[0][1] === $ace && $cards[1][1] === $ace) {
+            $cards[0][1] = $aceTurnedToBeEleven;
         }
-        $firstTurnScore = (int) $cards[0][1] + $cards[1][1];
+        $firstTurnScore = $cards[0][1] + $cards[1][1];
         return $firstTurnScore;
     }
 }
