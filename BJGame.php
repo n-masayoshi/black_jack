@@ -61,58 +61,35 @@ class BJGame
         // プレイヤーの １回目のターンの合計値
         $this->resultPlayerScores = $calFirstTurnScore->calFirstTurnScore($this->playerTwoCards);
 
-        echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。' . PHP_EOL;
-
         // ディーラーの １回目のターンの合計値
         $this->resultDealerScores = $calFirstTurnScore->calFirstTurnScore($this->dealerTwoCards);
 
-        // TODO:あとで、消す
-        echo 'ディーラーの現在の得点は' . $this->resultDealerScores . 'です。' . PHP_EOL;
-
-        // 合計値 < 18 の間は、プレイヤーは カードを1枚引き続ける
-        $drawOneCard = new DrawOneCard();
-        $calScore = new CalScore();
-        while ($this->resultPlayerScores < 18) {
-            $playerDrawOneCard = $drawOneCard->drawOneCard($deck);
-
-            echo 'あなたが引いた1枚のカードは、' . $playerDrawOneCard[0] . 'の' . $playerDrawOneCard[1] . 'です。' . PHP_EOL;
-
-            // $playerDeck に カードの数値を格納
-            $this->playerDeck[] = $playerDrawOneCard[1];
-
-            $this->resultPlayerScores = $calScore->calScore($this->playerDeck);
-        }
-
         $blackJackNumber = 21;
         // 最初に合計値が、決まるのは プレイヤー
-        // プレイヤーの合計値が、21 を超えたら、自動で、ディーラーの勝ち
-        if ($this->resultPlayerScores > $blackJackNumber) {
-            // TODO:あとで、消す
-            echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。' . PHP_EOL;
-            echo 'ディーラーの勝ち！' . PHP_EOL;
-            die();
-        }
-
         echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。カードを引きますか？（Y/N）';
         $this->yesOrNo = trim(fgets(STDIN));
         if ($this->yesOrNo === 'y' || $this->yesOrNo === 'Y') {
-            $judge = new BJYesOrNo();
-            $this->resultPlayerScores = $judge->yesOrNo($this->playerDeck, $this->resultPlayerScores);
+            do {
+                $judge = new BJYesOrNo();
+                $resultYesOrNo = $judge->yesOrNo($this->playerDeck, $this->resultPlayerScores);
+                $this->resultPlayerScores = $resultYesOrNo[0];
+                $newCard = $resultYesOrNo[1];
+                $this->playerDeck[] = $newCard[1];
 
-            echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。' . PHP_EOL;
+                echo 'あなたが引いた1枚のカードは、' . $newCard[0] . 'の' . $newCard[1] . 'です。' . PHP_EOL;
 
-            if ($this->resultPlayerScores > $blackJackNumber) {
-                echo 'ディーラーの勝ち！';
-                die();
-            } else {
-                echo 'カードを引きますか？（Y/N）';
-                $this->yesOrNo = trim(fgets(STDIN));
-                if ($this->yesOrNo === 'y' || $this->yesOrNo === 'Y') {
-                    $this->resultPlayerScores = $judge->yesOrNo($this->playerDeck, $this->resultPlayerScores);
+                if ($this->resultPlayerScores > $blackJackNumber) {
+                    echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。' . PHP_EOL;
+                    echo 'ディーラーの勝ち！';
+                    die();
                 }
-            }
+                echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。カードを引きますか？（Y/N）';
+                $this->yesOrNo = trim(fgets(STDIN));
+            } while($this->yesOrNo === 'y' || $this->yesOrNo === 'Y');
         }
 
+        $drawOneCard = new DrawOneCard();
+        $calScore = new CalScore();
         // 合計値 < 17 の間は、ディーラーは カードを1枚引き続ける
         while($this->resultDealerScores < 17) {
             $dealerDrawOneCard = $drawOneCard->drawOneCard($deck);
@@ -125,13 +102,17 @@ class BJGame
         }
 
         if ($this->resultDealerScores > $blackJackNumber) {
+            echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。' . PHP_EOL;
             echo 'プレイヤーの勝ち！';
         } else {
             if ($this->resultDealerScores > $this->resultPlayerScores) {
+                echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。' . PHP_EOL;
                 echo 'ディーラーの勝ち！';
             } elseif ($this->resultDealerScores < $this->resultPlayerScores) {
+                echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。' . PHP_EOL;
                 echo 'プレイヤーの勝ち！';
             } elseif ($this->resultDealerScores === $this->resultPlayerScores) {
+                echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。' . PHP_EOL;
                 echo '引き分け';
             }
         }
