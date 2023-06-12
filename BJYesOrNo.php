@@ -19,7 +19,6 @@ class BJYesOrNo
 
         // $playerDeck に カードの数値を格納
         $playerDeck[] = $playerDrawOneCard[1];
-        print_r($playerDeck) . PHP_EOL;
 
         $resultPlayerScores = $calScore->calScore($playerDeck);
 
