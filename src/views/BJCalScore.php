@@ -1,8 +1,8 @@
 <?php
 
-class CalScore
+class BJCalScore
 {
-    function calScore($eachDeck): int
+    function calculateScore($eachDeck): int
     {
         // 手札に、1 があった場合、その合計値に、-1 して +11 する
         // これは、1 を 11　に入れ替えて 計算するのと同じことを意味する

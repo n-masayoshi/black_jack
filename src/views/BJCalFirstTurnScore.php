@@ -1,6 +1,6 @@
 <?php
 
-class CalFirstTurnScore
+class FirstTurnScore
 {
     function calFirstTurnScore(array $cards): int
     {
