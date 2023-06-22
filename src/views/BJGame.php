@@ -2,9 +2,10 @@
 
 require_once('BJDeck.php');
 require_once('BJCalFirstTurnScore.php');
-require_once('BJYesOrNo.php');
-// require_once('BJYesOrNoJudge.php');
-// require_once('BJMakeForm.php');
+require_once('BJDisplayFormDrawCardOrNot.php');
+require_once('BJPlayer.php');
+require_once('BJDealer.php');
+// require_once('BJYesOrNo.php');
 // require_once('BJDrawOneCard.php');
 // require_once('BJCalScore.php');
 
@@ -17,11 +18,9 @@ class BJGame
     private array $playerDeck;
     private array $dealerDeck;
     private string $yesOrNo;
-    public function __construct
-    (
-    )
-    {
-    }
+
+    public function __construct() { }
+
     // public function start()
     // {
     //     echo 'hello PHP';
@@ -71,74 +70,42 @@ class BJGame
         $blackJackNumber = 21;
         // 最初に合計値が、決まるのは プレイヤー
         echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。カードを引きますか？';
+        $displayForm = new BJDisplayFormDrawCardOrNot();
+        $displayForm->displayFormDrawCardOrNot();
 
+        // フォームが送信された場合の処理
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // フォームからの選択肢を取得
+            $yesOrNo = $_POST['choice'];
 
-        // TODO:フォームメソッドを作る関数を作る
-        // $makeFormHTML = new BJMakeForm();
+            // 選択肢に基づいてゲームのロジックを実行
+            if ($yesOrNo === 'Y') {
 
+                $player = new BJPlayer();
+                $player->playerTurn($this->resultPlayerScores, $this->playerDeck, $this->resultPlayerScores, $this->dealerDeck,);
 
-        // TODO:新しい関数を作る
-        // Y か、N が $resultJudge に入る。
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     // フォームからの選択肢を取得
-        //     $yesOrNo = $_POST['yesOrNo'];
-        //     $judgeYesOrNo = new BJYesOrNoJudge();
-        //     $resultJudge = $judgeYesOrNo->judgeYesOrNo($yesOrNo);
-        // }
+                // // カードを引く処理
+                // $judge = new BJYesOrNo();
+                // $resultYesOrNo = $judge->yesOrNo($this->playerDeck, $this->resultPlayerScores);
 
+                // $this->resultPlayerScores = $resultYesOrNo[0];
+                // $newCard = $resultYesOrNo[1];
+                // $this->playerDeck[] = $newCard[1];
 
-        echo '
-            <form method="POST">
-                <label for="yes">Yes</label>
-                <input type="radio" name="yesOrNo" id="yes" value="Y" required>
+                // echo 'あなたが引いた1枚のカードは、' . $newCard[0] . 'の' . $newCard[1] . 'です。<br>';
 
-                <label for="no">No</label>
-                <input type="radio" name="yesOrNo" id="no" value="N" required>
-
-                <button type="submit">カードを引く</button>
-            </form>
-
-        ';
-        $yesOrNoCount = 0;
-        // do {
-            // フォームが送信された場合の処理
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // フォームからの選択肢を取得
-                $yesOrNo = $_POST['yesOrNo'];
-
-                // 選択肢に基づいてゲームのロジックを実行
-                if ($yesOrNo === 'Y') {
-                    // カードを引く処理
-                    $judge = new BJYesOrNo();
-                    $resultYesOrNo = $judge->yesOrNo($this->playerDeck, $this->resultPlayerScores);
-
-                    $this->resultPlayerScores = $resultYesOrNo[0];
-                    $newCard = $resultYesOrNo[1];
-                    $this->playerDeck[] = $newCard[1];
-
-                    echo 'あなたが引いた1枚のカードは、' . $newCard[0] . 'の' . $newCard[1] . 'です。<br>';
-
-                    if ($this->resultPlayerScores > $blackJackNumber) {
-                        echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
-                        echo 'ディーラーの勝ち！<br>';
-                        die();
-                    }
-                    $yesOrNoCount++;
-                    echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。カードを引きますか？（Y/N）';
-                    echo '
-                        <form method="POST">
-                            <label for="yes">Yes</label>
-                            <input type="radio" name="yesOrNo" id="yes" value="Y" required>
-
-                            <label for="no">No</label>
-                            <input type="radio" name="yesOrNo" id="no" value="N" required>
-
-                            <button type="submit">カードを引く</button>
-                        </form>
-                    ';
-                }
+                // if ($this->resultPlayerScores > $blackJackNumber) {
+                //     echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
+                //     echo 'ディーラーの勝ち！<br>';
+                //     die();
+                // }
+                // echo 'あなたの現在の得点は' . $this->resultPlayerScores . 'です。カードを引きますか？（Y/N）';
+                // $displayForm->displayFormDrawCardOrNot();
+            } else {
+                $dealer = new BJDealer();
+                $dealer->dealerTurn($this->resultDealerScores, $this->dealerDeck, $this->resultPlayerScores);
             }
-            // } while(($yesOrNo === 'y' || $yesOrNo === 'Y') && $yesOrNoCount < 2);
+        }
 
         // $this->yesOrNo = trim(fgets(STDIN));
         // if ($this->yesOrNo === 'y' || $this->yesOrNo === 'Y') {
@@ -163,31 +130,31 @@ class BJGame
 
         // $drawOneCard = new BJDrawOneCard();
         // $calScore = new BJCalScore();
-        // 合計値 < 17 の間は、ディーラーは カードを1枚引き続ける
-    //     while($this->resultDealerScores < 17) {
-    //         $dealerDrawOneCard = $drawOneCard->drawOneCard($deck);
+        // // 合計値 < 17 の間は、ディーラーは カードを1枚引き続ける
+        // while($this->resultDealerScores < 17) {
+        //     $dealerDrawOneCard = $drawOneCard->drawOneCard($deck);
 
-    //         echo 'ディーラーが引いた1枚のカードは、' . $dealerDrawOneCard[0] . 'の' . $dealerDrawOneCard[1] . 'です。<br>';
+        //     echo 'ディーラーが引いた1枚のカードは、' . $dealerDrawOneCard[0] . 'の' . $dealerDrawOneCard[1] . 'です。<br>';
 
-    //         $this->dealerDeck[] = $dealerDrawOneCard[1];
+        //     $this->dealerDeck[] = $dealerDrawOneCard[1];
 
-    //         $this->resultDealerScores = $calScore->calculateScore($this->dealerDeck);
-    //     }
+        //     $this->resultDealerScores = $calScore->calculateScore($this->dealerDeck);
+        // }
 
-    //     if ($this->resultDealerScores > $blackJackNumber) {
-    //         echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
-    //         echo 'プレイヤーの勝ち！<br>';
-    //     } else {
-    //         if ($this->resultDealerScores > $this->resultPlayerScores) {
-    //             echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
-    //             echo 'ディーラーの勝ち！<br>';
-    //         } elseif ($this->resultDealerScores < $this->resultPlayerScores) {
-    //             echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
-    //             echo 'プレイヤーの勝ち！<br>';
-    //         } elseif ($this->resultDealerScores === $this->resultPlayerScores) {
-    //             echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
-    //             echo '引き分け<br>';
-    //         }
-    //     }
+        // if ($this->resultDealerScores > $blackJackNumber) {
+        //     echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
+        //     echo 'プレイヤーの勝ち！<br>';
+        // } else {
+        //     if ($this->resultDealerScores > $this->resultPlayerScores) {
+        //         echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
+        //         echo 'ディーラーの勝ち！<br>';
+        //     } elseif ($this->resultDealerScores < $this->resultPlayerScores) {
+        //         echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
+        //         echo 'プレイヤーの勝ち！<br>';
+        //     } elseif ($this->resultDealerScores === $this->resultPlayerScores) {
+        //         echo 'ディーラーの得点は' . $this->resultDealerScores . 'です。<br>';
+        //         echo '引き分け<br>';
+        //     }
+        // }
     }
 }

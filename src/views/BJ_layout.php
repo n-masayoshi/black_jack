@@ -9,15 +9,18 @@
 </head>
 <body>
 <h1>Black Jack Game!!!</h1>
-<?php
-    require_once('BJGame.php');
 
-    $game = new BJGame();
-    $game->start();
-?>
+
 <div class="container">
     <?php include $content; ?>
 </div>
+
+<?php
+require_once('BJGame.php');
+
+$game = new BJGame();
+$game->start();
+?>
 
 <!-- <form method="POST">
     <label for="yes">Yes</label>

@@ -1,6 +1,6 @@
 <?php
 
-class DrawOneCard
+class BJDrawOneCard
 {
     public function drawOneCard(array $deck): array
     {
