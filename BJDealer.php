@@ -5,7 +5,7 @@ require_once('BJCalScore.php');
 
 class BJDealer
 {
-    public function dealerTurn(int $dealerScore, int $playerScore, array $dealerDeck)
+    public function dealerTurn(int $dealerScore, int $playerScore, array $dealerDeck): void
     {
         $drawOneCard = new BJDrawOneCard();
         $calScore = new BJCalScore();

@@ -49,7 +49,7 @@ class BJGame
             } while($this->yesOrNo === 'y' || $this->yesOrNo === 'Y');
         }
 
-        // ディラーのターン && 最終結果
+        // ディーラーのターン && 最終結果
         $dealerTurn = new BJDealer();
         $dealerTurn->dealerTurn($this->resultDealerScores, $this->resultPlayerScores, $dealerDeck);
     }
