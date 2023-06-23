@@ -35,6 +35,11 @@
     2. PHPだけを使って、ボタンフォームを表示させる関数の末尾に、カードを1枚引くかどうかの関数を呼び出すようにする。
        - この際、session_start() を使おうとしている。
 
+##### 現状
+---
+<img width="604" alt="スクリーンショット 2023-06-23 11 49 17" src="https://github.com/n-masayoshi/black_jack/assets/129864237/acfd06e7-b12e-4c9e-8d6e-ff745331b252">
+
+---
 # Black Jack ゲーム　現状
 
 ```
