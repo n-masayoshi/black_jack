@@ -1,5 +1,5 @@
 <?php
-/*
+
 require_once('BJDeck.php');
 require_once('BJDrawOneCard.php');
 require_once('BJCalScore.php');
