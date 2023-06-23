@@ -26,11 +26,6 @@
 - ステップ3：ブラウザ表示 の実装をやめた
   - 理由：JavaScriptに全て置き換える方が良いとわかったから。
 
-##### 現状
----
-<img width="604" alt="スクリーンショット 2023-06-23 11 49 17" src="https://github.com/n-masayoshi/black_jack/assets/129864237/acfd06e7-b12e-4c9e-8d6e-ff745331b252">
-
----
 # Black Jack ゲーム　現状
 
 ```
