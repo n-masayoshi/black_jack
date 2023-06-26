@@ -41,13 +41,12 @@ class BJFirstTurn
         // 最初のターン：$player, $dealer 各々の最初の2枚の合計値
         $calFirstTurnScore = new BJCalFirstTurnScore();
 
-        // プレイヤーの １回目のターンの合計値
+        // プレイヤーの１回目のターンの合計値
         $resultPlayerScores = $calFirstTurnScore->calFirstTurnScore($playerTwoCards);
 
-        // ディーラーの １回目のターンの合計値
+        // ディーラーの１回目のターンの合計値
         $resultDealerScores = $calFirstTurnScore->calFirstTurnScore($dealerTwoCards);
 
-        $blackJackNumber = 21;
         // 最初に合計値が、決まるのは プレイヤー
         echo 'あなたの現在の得点は' . $resultPlayerScores . 'です。カードを引きますか？（Y/N）';
         return [$playerDeck, $dealerDeck, $resultPlayerScores, $resultDealerScores];

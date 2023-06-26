@@ -1,19 +1,19 @@
 <?php
 
-require_once('BJDrawOneCard.php');
 require_once('BJCalScore.php');
 
 class BJDealer
 {
-    public function dealerTurn(int $dealerScore, int $playerScore, array $dealerDeck): void
+    public function dealerTurn(int $dealerScore, int $playerScore, array $dealerDeck)
     {
-        $drawOneCard = new BJDrawOneCard();
-        $calScore = new BJCalScore();
         $BJdeck = new BJDeck();
         $deck = $BJdeck->makeDeck();
+        $calScore = new BJCalScore();
+
         // 合計値 < 17 の間は、ディーラーは カードを1枚引き続ける
         while($dealerScore < 17) {
-            $dealerDrawOneCard = $drawOneCard->drawOneCard($deck);
+            $randomKeys = array_rand($deck);
+            $dealerDrawOneCard = $deck[$randomKeys];
 
             echo 'ディーラーが引いた1枚のカードは、' . $dealerDrawOneCard[0] . 'の' . $dealerDrawOneCard[1] . 'です。' . PHP_EOL;
 

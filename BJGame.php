@@ -6,6 +6,8 @@ require_once('BJDealer.php');
 
 class BJGame
 {
+    private array $playerDeck;
+    private array $dealerDeck;
     private int $resultPlayerScores;
     private int $resultDealerScores;
     private string $yesOrNo;
@@ -21,21 +23,21 @@ class BJGame
         // 初回のターン
         $firstTurn = new BJFirstTurn();
         $resultFirstTurn = $firstTurn->firstTurn();
-        $playerDeck = $resultFirstTurn[0];
-        $dealerDeck = $resultFirstTurn[1];
+        $this->playerDeck = $resultFirstTurn[0];
+        $this->dealerDeck = $resultFirstTurn[1];
         $this->resultPlayerScores = $resultFirstTurn[2];
         $this->resultDealerScores = $resultFirstTurn[3];
 
         $blackJackNumber = 21;
-        // 2ターン目
+        // $player ターン
         $this->yesOrNo = trim(fgets(STDIN));
         if ($this->yesOrNo === 'y' || $this->yesOrNo === 'Y') {
             do {
                 $judge = new BJYesOrNo();
-                $resultYesOrNo = $judge->yesOrNo($playerDeck, $this->resultPlayerScores);
-                $this->resultPlayerScores = $resultYesOrNo[0];
-                $newCard = $resultYesOrNo[1];
-                $playerDeck[] = $newCard[1];
+                $resultPlayerTurn = $judge->yesOrNo($this->playerDeck, $this->resultPlayerScores);
+                $this->resultPlayerScores = $resultPlayerTurn[0];
+                $newCard = $resultPlayerTurn[1];
+                $this->playerDeck[] = $newCard[1];
 
                 echo 'あなたが引いた1枚のカードは、' . $newCard[0] . 'の' . $newCard[1] . 'です。' . PHP_EOL;
 
@@ -49,8 +51,8 @@ class BJGame
             } while($this->yesOrNo === 'y' || $this->yesOrNo === 'Y');
         }
 
-        // ディーラーのターン && 最終結果
+        // $dealer ターン && 最終結果
         $dealerTurn = new BJDealer();
-        $dealerTurn->dealerTurn($this->resultDealerScores, $this->resultPlayerScores, $dealerDeck);
+        $dealerTurn->dealerTurn($this->resultDealerScores, $this->resultPlayerScores, $this->dealerDeck);
     }
 }
