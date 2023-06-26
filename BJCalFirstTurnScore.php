@@ -2,19 +2,17 @@
 
 class BJCalFirstTurnScore
 {
-    public function calFirstTurnScore(array $cards): int
+    public function calFirstTurnScore(array $eachDeck): int
     {
+        // 手札に、1 があった場合、その合計値に、-1 して +11 する
+        // これは、1 を 11　に入れ替えて 計算するのと同じことを意味する
         $ace = 1;
         $aceTurnedToBeEleven = 11;
-        // 2枚のカードの内、どちらかが 1　の場合、それを 11 として計算する。
-        if ($cards[0][1] === $ace && $cards[1][1] !== $ace) {
-            $cards[0][1] = $aceTurnedToBeEleven;
-        } elseif ($cards[1][1] === $ace && $cards[0][1] !== $ace) {
-            $cards[1][1] = $aceTurnedToBeEleven;
-        } elseif ($cards[0][1] === $ace && $cards[1][1] === $ace) {
-            $cards[0][1] = $aceTurnedToBeEleven;
+        if (in_array($ace, $eachDeck)) {
+            $firstTurnScore = array_sum($eachDeck) - $ace + $aceTurnedToBeEleven;
+        } else {
+            $firstTurnScore = array_sum($eachDeck);
         }
-        $firstTurnScore = $cards[0][1] + $cards[1][1];
         return $firstTurnScore;
     }
 }

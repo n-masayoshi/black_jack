@@ -42,10 +42,10 @@ class BJFirstTurn
         $calFirstTurnScore = new BJCalFirstTurnScore();
 
         // プレイヤーの１回目のターンの合計値
-        $resultPlayerScores = $calFirstTurnScore->calFirstTurnScore($playerTwoCards);
+        $resultPlayerScores = $calFirstTurnScore->calFirstTurnScore($playerDeck);
 
         // ディーラーの１回目のターンの合計値
-        $resultDealerScores = $calFirstTurnScore->calFirstTurnScore($dealerTwoCards);
+        $resultDealerScores = $calFirstTurnScore->calFirstTurnScore($dealerDeck);
 
         // 最初に合計値が、決まるのは プレイヤー
         echo 'あなたの現在の得点は' . $resultPlayerScores . 'です。カードを引きますか？（Y/N）';
