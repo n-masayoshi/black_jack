@@ -6,7 +6,7 @@ require_once('BJCalScore.php');
 
 class BJYesOrNo
 {
-    function yesOrNo($playerDeck, $resultPlayerScores): array
+    public function yesOrNo($playerDeck, $resultPlayerScores): array
     {
         $BJdeck = new BJDeck();
         $deck = $BJdeck->makeDeck();

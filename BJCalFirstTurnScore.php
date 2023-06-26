@@ -2,7 +2,7 @@
 
 class BJCalFirstTurnScore
 {
-    function calFirstTurnScore(array $cards): int
+    public function calFirstTurnScore(array $cards): int
     {
         $ace = 1;
         $aceTurnedToBeEleven = 11;
